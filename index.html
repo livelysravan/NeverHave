@@ -43,26 +43,6 @@
             letter-spacing: -0.02em;
         }
 
-        .stats {
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            font-size: 0.9rem;
-            color: #888888;
-        }
-
-        .stat-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .stat-number {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: #ffffff;
-        }
-
         .game-area {
             opacity: 0;
             animation: fadeIn 1s ease-out 0.3s forwards;
@@ -267,10 +247,6 @@
             .actions {
                 flex-direction: column;
             }
-            
-            .stats {
-                gap: 1.5rem;
-            }
         }
     </style>
 </head>
@@ -278,20 +254,6 @@
     <div class="container">
         <div class="header">
             <h1 class="title"><span style="color: cornflowerblue;"> UnFiltered</span></h1>
-            <div class="stats">
-                <div class="stat-item">
-                    <div id="guilty-count" class="stat-number">0</div>
-                    <div><span style="color: red;"> Me!</span></div>
-                </div>
-                <div class="stat-item">
-                    <div id="innocent-count" class="stat-number">0</div>
-                    <div><span style="color: green;"> Never</span></div>
-                </div>
-                <div class="stat-item">
-                    <div id="total-count" class="stat-number">0</div>
-                    <div>Total</div>
-                </div>
-            </div>
         </div>
         
         <div class="game-area">
@@ -319,179 +281,177 @@
     <div id="celebration" class="celebration"></div>
 
     <script>
-  const statements = [
-  "gone through someone's phone without their permission",
-  "texted multiple people 'good morning' just to feel wanted",
-  "talked trash about my ex and still went back to them",
-  "pretended to be over someone when I wasn't",
-  "kept someone on 'seen' just for attention",
-  "been jealous of my friend's relationship",
-  "dated someone just because I was bored",
-  "ghosted someone after saying 'I'm not like others'",
-  "used 'I'm an empath' as an excuse for toxic behavior",
-  "posted a deep quote just to get someone's attention",
-  "lied about liking a hobby just to impress someone",
-  "called someone crazy when it was actually my fault",
-  "used someone as a rebound and knew it",
-  "said 'I'm fine' when I was about to explode",
-  "got back with an ex just to make someone jealous",
-  "claimed I'm 'healed' when I just repressed everything",
-  "dated someone I wasn’t attracted to for free food",
-  "told someone 'I love you' and didn’t mean it",
-  "claimed someone was obsessed with me when they weren’t",
-  "flirted just to get validation, not because I liked them",
-  "intentionally ignored texts to seem cool",
-  "kept talking to an ex behind my new partner's back",
-  "lied about being single to flirt",
-  "made someone feel guilty for something I caused",
-  "checked my ex’s new partner and compared myself",
-  "manipulated someone emotionally without realizing it",
-  "talked to someone’s best friend after getting rejected",
-  "kept someone in the friendzone for attention",
-  "dated someone only because my friends said they’re hot",
-  "played the victim in an argument I caused",
-  "liked someone's post just to make someone else jealous",
-  "shared a quote online that was clearly meant for someone",
-  "made fake accounts to check on someone",
-  "watched someone's stories just to stay relevant",
-  "used someone else's trauma to look more emotionally deep",
-  "used being 'loyal' as a personality trait",
-  "stayed in a toxic relationship because I was lonely",
-  "lied about being okay with casual when I wanted more",
-  "dated someone way older/younger for the thrill",
-  "sent a risky text and then turned off notifications",
-  "lied to get out of a date",
-  "spied on someone using a friend’s account",
-  "deleted messages to hide something",
-  "made someone cry and didn’t apologize",
-  "talked about someone behind their back and got caught",
-  "cheated and blamed it on the alcohol",
-  "used 'it just happened' as an excuse",
-  "made a fake account to DM someone",
-  "dated two people at once and called it 'talking stage'",
-  "gaslighted someone into thinking they were the problem",
-  "said I’m over my ex but kept bringing them up",
-  "called someone 'too sensitive' to avoid accountability",
-  "used therapy speak to win an argument",
-  "told someone I was busy and went out with someone else",
-  "posted a story just to get someone’s attention",
-  "blocked someone and unblocked just to check their profile",
-  "flirted while in a relationship",
-  "lied about how many people I've dated",
-  "said 'I don’t do drama' then caused drama",
-  "used someone’s secret against them in a fight",
-  "dated someone I knew my friend liked",
-  "showed fake support just for clout",
-  "said 'I hate liars' but lied",
-  "spilled secrets after promising I wouldn’t",
-  "acted cold just to seem mysterious",
-  "made someone jealous on purpose",
-  "said I’m lowkey but watched every story and like",
-  "used someone’s insecurities to win an argument",
-  "pretended to change but stayed the same",
-  "used mental health as an excuse for being toxic",
-  "cheated emotionally and denied it",
-  "told someone what they wanted to hear, not the truth",
-  "claimed I was ghosted when I was just left on read",
-  "sent an old photo to look better",
-  "dated someone for revenge",
-  "hid a relationship from everyone",
-  "dated someone for their looks only",
-  "dumped someone on their birthday",
-  "used someone as a therapist without asking",
-  "told someone I loved them too fast",
-  "posted a 'single' meme while in a relationship",
-  "gaslighted myself into thinking I was the issue",
-  "told multiple people 'I miss you' in the same week",
-  "used a fake name on a dating app",
-  "used someone’s pet to flirt",
-  "dated someone just to prove a point",
-  "claimed someone was toxic when they just had boundaries",
-  "stayed in a situationship and caught feelings",
-  "said 'I don’t care' when I deeply did",
-  "added someone back just to ignore them again",
-  "used a fake sob story to get sympathy",
-  "liked my ex’s photo from a burner account",
-  "sent a flirty snap after an argument",
-  "spammed stories to make someone miss me",
-  "talked bad about my partner to others",
-  "flirted to get free stuff",
-  "pretended to be happy for a friend’s engagement",
-  "dated someone out of pity",
-  "told my friend to break up with someone just because I didn’t like them",
-  "went through my partner’s likes and followers",
-  "used the phrase 'let’s see where it goes' to stall",
-  "overshared on social media to get attention",
-  "got mad about a dream",
-  "talked to my ex’s friend on purpose",
-  "said I’m over it then cried to a playlist",
-  "ignored red flags because they were hot",
-  "claimed someone was emotionally unavailable when I was",
-  "tried to make someone jealous by flirting with their friend",
-  "dated someone with no chemistry just for the label",
-  "used astrology to excuse my behavior",
-  "said 'we’re just talking' to downplay the relationship",
-  "shared old photos to make someone nostalgic",
-  "claimed I wanted closure but wanted them back",
-  "pretended to forgive someone just to hold it over them later",
-  "posted a couple pic right after a fight",
-  "unmatched someone after they didn’t reply fast enough",
-  "stalked someone’s following list",
-  "acted bored when I was obsessed",
-  "lied about how long I was single",
-  "acted like I didn't see the message when I did",
-  "said I hate drama but stirred it up",
-  "posted a sad song lyric on purpose",
-  "liked someone’s story while talking to someone else",
-  "kept chatting with someone even after deciding I wasn’t into them",
-  "called someone toxic for setting boundaries",
-  "talked bad about an ex but secretly missed them",
-  "pretended to bump into someone on purpose",
-  "shared memes clearly targeted at someone",
-  "claimed I’m chill when I’m emotionally intense",
-  "left someone on read just to feel power",
-  "played the nice guy/girl and still ghosted",
-  "stayed in a relationship for comfort, not love",
-  "told someone 'you deserve better' and still hurt them",
-  "used someone as emotional support and cut them off",
-  "sent risky texts while drunk and blamed the alcohol",
-  "said 'I need space' when I just wanted out",
-  "talked about therapy without going",
-  "lied on a dating profile",
-  "used an old picture as a profile photo",
-  "dated someone with the same name as an ex",
-  "flirted while on a break",
-  "called someone toxic just to avoid responsibility",
-  "dated someone just to prove I could get them",
-  "told someone I was single when I wasn't",
-  "talked to someone else immediately after a breakup",
-  "dated a friend’s ex and pretended it was fine",
-  "sent anonymous messages to mess with someone",
-  "used crying to get out of accountability",
-  "shared a playlist meant for an ex with someone new",
-  "said 'I’ve changed' without changing",
-  "gave mixed signals on purpose",
-  "used someone’s trauma to win an argument",
-  "dated someone who was clearly not over their ex",
-  "pretended to be emotionally mature but wasn’t",
-  "said 'I don’t play games' and then played games",
-  "chased someone just to win, not to love",
-  "talked trash about someone then laughed with them the next day",
-  "liked a rival’s post just to confuse them",
-  "kept someone hanging just in case things didn’t work with someone else",
-  "sent a risky text, deleted it, then sent it again",
-  "made a TikTok or reel about an ex and acted like it was random",
-  "used 'good vibes only' as a way to avoid real talk",
-  "pretended to move on just to get attention",
-  "told someone 'you'll regret this' during a breakup",
-  "cried on social media for likes and sympathy",
-  "told someone they were overreacting when they weren't",
-  "been in love with two people at the same time",
-  "claimed I was the victim to get people on my side",
-  "lied about my relationship status to gain followers"
-];
-
-
+        const statements = [
+            "gone through someone's phone without their permission",
+            "texted multiple people 'good morning' just to feel wanted",
+            "talked trash about my ex and still went back to them",
+            "pretended to be over someone when I wasn't",
+            "kept someone on 'seen' just for attention",
+            "been jealous of my friend's relationship",
+            "dated someone just because I was bored",
+            "ghosted someone after saying 'I'm not like others'",
+            "used 'I'm an empath' as an excuse for toxic behavior",
+            "posted a deep quote just to get someone's attention",
+            "lied about liking a hobby just to impress someone",
+            "called someone crazy when it was actually my fault",
+            "used someone as a rebound and knew it",
+            "said 'I'm fine' when I was about to explode",
+            "got back with an ex just to make someone jealous",
+            "claimed I'm 'healed' when I just repressed everything",
+            "dated someone I wasn't attracted to for free food",
+            "told someone 'I love you' and didn't mean it",
+            "claimed someone was obsessed with me when they weren't",
+            "flirted just to get validation, not because I liked them",
+            "intentionally ignored texts to seem cool",
+            "kept talking to an ex behind my new partner's back",
+            "lied about being single to flirt",
+            "made someone feel guilty for something I caused",
+            "checked my ex's new partner and compared myself",
+            "manipulated someone emotionally without realizing it",
+            "talked to someone's best friend after getting rejected",
+            "kept someone in the friendzone for attention",
+            "dated someone only because my friends said they're hot",
+            "played the victim in an argument I caused",
+            "liked someone's post just to make someone else jealous",
+            "shared a quote online that was clearly meant for someone",
+            "made fake accounts to check on someone",
+            "watched someone's stories just to stay relevant",
+            "used someone else's trauma to look more emotionally deep",
+            "used being 'loyal' as a personality trait",
+            "stayed in a toxic relationship because I was lonely",
+            "lied about being okay with casual when I wanted more",
+            "dated someone way older/younger for the thrill",
+            "sent a risky text and then turned off notifications",
+            "lied to get out of a date",
+            "spied on someone using a friend's account",
+            "deleted messages to hide something",
+            "made someone cry and didn't apologize",
+            "talked about someone behind their back and got caught",
+            "cheated and blamed it on the alcohol",
+            "used 'it just happened' as an excuse",
+            "made a fake account to DM someone",
+            "dated two people at once and called it 'talking stage'",
+            "gaslighted someone into thinking they were the problem",
+            "said I'm over my ex but kept bringing them up",
+            "called someone 'too sensitive' to avoid accountability",
+            "used therapy speak to win an argument",
+            "told someone I was busy and went out with someone else",
+            "posted a story just to get someone's attention",
+            "blocked someone and unblocked just to check their profile",
+            "flirted while in a relationship",
+            "lied about how many people I've dated",
+            "said 'I don't do drama' then caused drama",
+            "used someone's secret against them in a fight",
+            "dated someone I knew my friend liked",
+            "showed fake support just for clout",
+            "said 'I hate liars' but lied",
+            "spilled secrets after promising I wouldn't",
+            "acted cold just to seem mysterious",
+            "made someone jealous on purpose",
+            "said I'm lowkey but watched every story and like",
+            "used someone's insecurities to win an argument",
+            "pretended to change but stayed the same",
+            "used mental health as an excuse for being toxic",
+            "cheated emotionally and denied it",
+            "told someone what they wanted to hear, not the truth",
+            "claimed I was ghosted when I was just left on read",
+            "sent an old photo to look better",
+            "dated someone for revenge",
+            "hid a relationship from everyone",
+            "dated someone for their looks only",
+            "dumped someone on their birthday",
+            "used someone as a therapist without asking",
+            "told someone I loved them too fast",
+            "posted a 'single' meme while in a relationship",
+            "gaslighted myself into thinking I was the issue",
+            "told multiple people 'I miss you' in the same week",
+            "used a fake name on a dating app",
+            "used someone's pet to flirt",
+            "dated someone just to prove a point",
+            "claimed someone was toxic when they just had boundaries",
+            "stayed in a situationship and caught feelings",
+            "said 'I don't care' when I deeply did",
+            "added someone back just to ignore them again",
+            "used a fake sob story to get sympathy",
+            "liked my ex's photo from a burner account",
+            "sent a flirty snap after an argument",
+            "spammed stories to make someone miss me",
+            "talked bad about my partner to others",
+            "flirted to get free stuff",
+            "pretended to be happy for a friend's engagement",
+            "dated someone out of pity",
+            "told my friend to break up with someone just because I didn't like them",
+            "went through my partner's likes and followers",
+            "used the phrase 'let's see where it goes' to stall",
+            "overshared on social media to get attention",
+            "got mad about a dream",
+            "talked to my ex's friend on purpose",
+            "said I'm over it then cried to a playlist",
+            "ignored red flags because they were hot",
+            "claimed someone was emotionally unavailable when I was",
+            "tried to make someone jealous by flirting with their friend",
+            "dated someone with no chemistry just for the label",
+            "used astrology to excuse my behavior",
+            "said 'we're just talking' to downplay the relationship",
+            "shared old photos to make someone nostalgic",
+            "claimed I wanted closure but wanted them back",
+            "pretended to forgive someone just to hold it over them later",
+            "posted a couple pic right after a fight",
+            "unmatched someone after they didn't reply fast enough",
+            "stalked someone's following list",
+            "acted bored when I was obsessed",
+            "lied about how long I was single",
+            "acted like I didn't see the message when I did",
+            "said I hate drama but stirred it up",
+            "posted a sad song lyric on purpose",
+            "liked someone's story while talking to someone else",
+            "kept chatting with someone even after deciding I wasn't into them",
+            "called someone toxic for setting boundaries",
+            "talked bad about an ex but secretly missed them",
+            "pretended to bump into someone on purpose",
+            "shared memes clearly targeted at someone",
+            "claimed I'm chill when I'm emotionally intense",
+            "left someone on read just to feel power",
+            "played the nice guy/girl and still ghosted",
+            "stayed in a relationship for comfort, not love",
+            "told someone 'you deserve better' and still hurt them",
+            "used someone as emotional support and cut them off",
+            "sent risky texts while drunk and blamed the alcohol",
+            "said 'I need space' when I just wanted out",
+            "talked about therapy without going",
+            "lied on a dating profile",
+            "used an old picture as a profile photo",
+            "dated someone with the same name as an ex",
+            "flirted while on a break",
+            "called someone toxic just to avoid responsibility",
+            "dated someone just to prove I could get them",
+            "told someone I was single when I wasn't",
+            "talked to someone else immediately after a breakup",
+            "dated a friend's ex and pretended it was fine",
+            "sent anonymous messages to mess with someone",
+            "used crying to get out of accountability",
+            "shared a playlist meant for an ex with someone new",
+            "said 'I've changed' without changing",
+            "gave mixed signals on purpose",
+            "used someone's trauma to win an argument",
+            "dated someone who was clearly not over their ex",
+            "pretended to be emotionally mature but wasn't",
+            "said 'I don't play games' and then played games",
+            "chased someone just to win, not to love",
+            "talked trash about someone then laughed with them the next day",
+            "liked a rival's post just to confuse them",
+            "kept someone hanging just in case things didn't work with someone else",
+            "sent a risky text, deleted it, then sent it again",
+            "made a TikTok or reel about an ex and acted like it was random",
+            "used 'good vibes only' as a way to avoid real talk",
+            "pretended to move on just to get attention",
+            "told someone 'you'll regret this' during a breakup",
+            "cried on social media for likes and sympathy",
+            "told someone they were overreacting when they weren't",
+            "been in love with two people at the same time",
+            "claimed I was the victim to get people on my side",
+            "lied about my relationship status to gain followers"
+        ];
 
         let currentIndex = 0;
         let guiltyCount = 0;
@@ -516,12 +476,6 @@
             const statement = getRandomStatement();
             document.getElementById('statement-text').textContent = statement;
             document.getElementById('progress-text').textContent = `Question ${totalCount + 1}`;
-        }
-
-        function updateStats() {
-            document.getElementById('guilty-count').textContent = guiltyCount;
-            document.getElementById('innocent-count').textContent = innocentCount;
-            document.getElementById('total-count').textContent = totalCount;
         }
 
         function showCelebration(type) {
@@ -554,7 +508,6 @@
             }
             
             totalCount++;
-            updateStats();
             
             // Animate to next statement
             setTimeout(() => {
@@ -584,7 +537,6 @@
             totalCount = 0;
             usedStatements = [];
             
-            updateStats();
             displayStatement();
             
             showCelebration('innocent');
@@ -593,7 +545,6 @@
         // Initialize game
         document.addEventListener('DOMContentLoaded', function() {
             displayStatement();
-            updateStats();
         });
 
         // Keyboard shortcuts

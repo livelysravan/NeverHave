@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Never Have I Ever</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #0a0a0a;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            max-width: 500px;
+            padding: 2rem;
+            width: 100%;
+        }
+
+        .header {
+            margin-bottom: 3rem;
+            opacity: 0;
+            animation: fadeIn 1s ease-out forwards;
+        }
+
+        .title {
+            font-size: 2.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            font-size: 0.9rem;
+            color: #888888;
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .stat-number {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .game-area {
+            opacity: 0;
+            animation: fadeIn 1s ease-out 0.3s forwards;
+        }
+
+        .statement-card {
+            background: #111111;
+            border: 1px solid #333333;
+            padding: 2.5rem 2rem;
+            margin-bottom: 2rem;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .statement-prefix {
+            font-size: 1rem;
+            color: #888888;
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+
+        .statement-text {
+            font-size: 1.2rem;
+            font-weight: 400;
+            line-height: 1.5;
+            color: #ffffff;
+        }
+
+        .actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .action-btn {
+            flex: 1;
+            background: #111111;
+            border: 1px solid #333333;
+            color: #ffffff;
+            padding: 1rem;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+            font-family: inherit;
+        }
+
+        .action-btn:hover {
+            background: #1a1a1a;
+            border-color: #555555;
+            transform: translateY(-1px);
+        }
+
+        .action-btn:active {
+            transform: translateY(0);
+            background: #0f0f0f;
+        }
+
+        .action-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .action-btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-guilty {
+            border-color: #444444;
+        }
+
+        .btn-guilty:hover {
+            border-color: #666666;
+        }
+
+        .btn-innocent {
+            border-color: #333333;
+        }
+
+        .controls {
+            margin-top: 2rem;
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .control-btn {
+            background: transparent;
+            border: 1px solid #333333;
+            color: #888888;
+            padding: 0.6rem 1rem;
+            font-size: 0.8rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .control-btn:hover {
+            background: #111111;
+            color: #ffffff;
+            border-color: #555555;
+        }
+
+        .progress {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.8rem;
+            color: #555555;
+        }
+
+        .celebration {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.5rem;
+            color: #ffffff;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        .celebration.show {
+            animation: celebrate 0.6s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideOut {
+            from {
+                opacity: 1;
+                transform: translateX(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateX(-100px);
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes celebrate {
+            0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
+            50% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
+            100% { opacity: 0; transform: translate(-50%, -50%) scale(1); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        .pulse {
+            animation: pulse 0.3s ease-in-out;
+        }
+
+        /* Mobile responsive */
+        @media (max-width: 480px) {
+            .container {
+                padding: 1rem;
+                max-width: 350px;
+            }
+            
+            .title {
+                font-size: 1.8rem;
+            }
+            
+            .statement-card {
+                padding: 2rem 1.5rem;
+            }
+            
+            .actions {
+                flex-direction: column;
+            }
+            
+            .stats {
+                gap: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="title">Never Have I Ever</h1>
+            <div class="stats">
+                <div class="stat-item">
+                    <div id="guilty-count" class="stat-number">0</div>
+                    <div>Guilty</div>
+                </div>
+                <div class="stat-item">
+                    <div id="innocent-count" class="stat-number">0</div>
+                    <div>Innocent</div>
+                </div>
+                <div class="stat-item">
+                    <div id="total-count" class="stat-number">0</div>
+                    <div>Total</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="game-area">
+            <div id="statement-card" class="statement-card">
+                <div class="statement-prefix">Never have I ever...</div>
+                <div id="statement-text" class="statement-text"></div>
+            </div>
+            
+            <div class="actions">
+                <button class="action-btn btn-guilty" onclick="answer('guilty')">I Have</button>
+                <button class="action-btn btn-innocent" onclick="answer('innocent')">Never</button>
+            </div>
+            
+            <div class="controls">
+                <button class="control-btn" onclick="nextStatement()">Skip</button>
+                <button class="control-btn" onclick="resetGame()">Reset</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="progress">
+        <span id="progress-text">Question 1</span>
+    </div>
+    
+    <div id="celebration" class="celebration"></div>
+
+    <script>
+        const statements = [
+  "eaten food that fell on the floor",
+  "pretended to be sick to skip school or work",
+  "stalked someone on social media for hours",
+  "laughed so hard that I peed myself",
+  "forgotten someone's name immediately after being introduced",
+  "walked into a glass door",
+  "fallen asleep during a movie in theaters",
+  "googled myself",
+  "eaten cereal for dinner",
+  "talked to myself in the mirror",
+  "pretended to know a song and hummed along",
+  "waved back at someone who wasn't waving at me",
+  "fallen up the stairs",
+  "worn clothes inside out all day without realizing",
+  "used pickup lines from the internet",
+  "cried during a commercial",
+  "tried to push a door that says 'pull'",
+  "pretended to text to avoid talking to someone",
+  "eaten something past its expiration date",
+  "gotten lost in my own neighborhood",
+  "accidentally liked someone's old photo on social media",
+  "sung in the shower",
+  "danced when no one was watching",
+  "stayed up all night binge-watching a series",
+  "ordered pizza more than 3 times in one week",
+  "forgotten what day of the week it was",
+  "walked into the wrong bathroom",
+  "tried to look cool and failed miserably",
+  "pretended to understand something I had no clue about",
+  "bought something just because it was on sale",
+  "taken a selfie in a public bathroom",
+  "eaten ice cream straight from the container",
+  "googled how to spell a simple word",
+  "called someone by the wrong name repeatedly",
+  "gotten scared by my own reflection",
+  "tried to be friends with someone I secretly didn't like",
+  "eaten a whole bag of chips in one sitting",
+  "pretended my phone was dead to avoid answering",
+  "gotten excited about free food",
+  "taken a nap that lasted longer than planned",
+  "stayed in pajamas all day",
+  "drunk-texted an ex",
+  "used someone else's toothbrush",
+  "told a secret I promised to keep",
+  "laughed at a funeral",
+  "spied on my neighbors",
+  "lied on a dating app",
+  "pretended to know someone I didn’t",
+  "read someone else’s messages",
+  "made a fake account to stalk someone",
+  "had a crush on a teacher",
+  "kissed someone I shouldn’t have",
+  "been in love with someone unavailable",
+  "sent a risky text and regretted it",
+  "kissed someone at a party",
+  "cheated in a game and didn’t tell",
+  "had a crush on my friend’s sibling",
+  "ghosted someone",
+  "snuck out at night",
+  "faked being drunk",
+  "been caught lying red-handed",
+  "gone through someone’s phone",
+  "got caught talking about someone behind their back",
+  "thought about revenge on someone",
+  "lied to make myself seem cooler",
+  "sent a screenshot to the wrong person",
+  "broken something and blamed someone else",
+  "checked someone's phone while they were sleeping",
+  "re-read old messages and missed someone",
+  "had feelings for two people at once",
+  "kissed more than one person in a day",
+  "lied during a game of truth or dare",
+  "shared someone’s secret",
+  "been friend-zoned",
+  "had a one-sided crush that lasted years",
+  "lied to protect someone’s feelings",
+  "flirted to get something I wanted",
+  "been the reason a couple broke up",
+  "been dumped over text",
+  "pretended not to see someone I know in public",
+  "liked a post accidentally and then unliked it",
+  "dated someone just to make someone else jealous",
+  "said ‘I love you’ and didn’t mean it",
+  "used someone for emotional support without reciprocating",
+  "spoke badly about someone and got caught",
+  "sent a flirty text to the wrong person",
+  "lied in this game before",
+  "had a crush on a best friend",
+  "regretted trusting someone",
+  "been heartbroken and didn’t tell anyone",
+  "wished for someone’s breakup",
+  "gotten involved in someone else's drama",
+  "been blocked by someone I liked",
+  "watched someone cry and said nothing",
+  "saved photos of someone I was obsessed with",
+  "deleted messages to hide something",
+  "gotten drunk and said something I regret",
+  "said ‘I miss you’ and didn’t mean it",
+  "been caught looking at someone inappropriately",
+  "been obsessed with someone and scared them away",
+  "liked someone right after a breakup",
+  "led someone on for attention",
+  "let jealousy ruin a relationship",
+  "regretted kissing someone",
+  "lied about my relationship status",
+  "talked to someone just to make someone else jealous",
+  "been someone's rebound",
+  "compared every partner to my ex",
+  "felt secretly happy when something went wrong for someone",
+  "fantasized about someone I shouldn’t have",
+  "been mad at someone and acted like nothing happened",
+  "wished I could take back something I said",
+  "flirted with someone I didn’t like",
+  "felt better after cutting someone off",
+  "read old conversations and felt stupid",
+  "shared a private photo",
+  "let a good person go and regretted it",
+  "felt alone in a room full of people",
+  "used someone’s weakness against them",
+  "dated someone much older",
+  "been obsessed with an ex",
+  "wanted someone I couldn’t have",
+  "hid a relationship from my family",
+  "ignored red flags",
+  "felt like a second choice",
+  "talked bad about an ex to feel better",
+  "tried to win someone back",
+  "lied to get out of a relationship",
+  "stayed in a toxic relationship",
+  "chased someone who didn’t want me",
+  "been cheated on and didn’t tell anyone",
+  "been the ‘other person’ unknowingly",
+  "regretted dating someone immediately",
+  "used someone I didn’t care about",
+  "had romantic feelings for a stranger",
+  "let ego ruin something good",
+  "texted an ex when I shouldn’t have",
+  "said ‘we should talk’ just to scare someone",
+  "felt empty after hooking up",
+  "wanted revenge on someone I once loved",
+  "missed someone and told them I didn’t",
+  "dated someone for their looks",
+  "felt insecure because of someone",
+  "wished I could start over with someone",
+  "flirted with someone just to pass time",
+  "felt like I wasn’t good enough",
+  "talked about someone behind their back right after seeing them",
+  "kissed someone I didn’t even like",
+  "lied in a relationship",
+  "regretted saying no to someone",
+  "wanted to disappear from everyone’s life",
+  "felt jealous of a friend’s success",
+  "pretended to be okay when I wasn’t",
+  "tried to replace someone quickly",
+  "dated someone just for fun",
+  "felt like I was being used",
+  "wanted to say something but didn’t",
+  "hurt someone and felt nothing",
+  "been toxic in a relationship",
+  "shared someone's secret with my partner",
+  "thought about texting my ex every day",
+  "said something mean and immediately regretted it",
+  "been scared of falling in love",
+  "used mental health as an excuse",
+  "said ‘I hate you’ and meant it",
+  "felt addicted to someone",
+  "wanted to punch someone I loved",
+  "lied to win an argument",
+  "made someone cry and didn’t apologize",
+  "tried to make someone jealous online",
+  "blocked someone then unblocked them",
+  "cried over someone who didn’t care",
+  "felt emotionally drained because of someone",
+  "ignored someone’s feelings for my own benefit",
+  "wished I never met someone",
+  "felt ashamed for something I did to someone",
+  "regretted a kiss instantly",
+  "felt like I was being watched",
+  "wanted to delete every memory of someone",
+  "acted like I moved on when I hadn’t",
+  "felt dead inside but smiled anyway",
+  "liked someone just for their voice",
+  "been scared of commitment",
+  "been ghosted and never got closure",
+  "lied to cover another lie",
+  "talked badly about someone to feel better",
+  "felt like I was better off alone",
+  "ruined a good thing because of doubt",
+  "said something cruel out of jealousy",
+  "been emotionally manipulative",
+  "chased a temporary high",
+  "hurt someone because I was hurting",
+  "wanted someone to fail after we fell out",
+  "lied for attention",
+  "kept a relationship secret for the wrong reasons",
+  "felt envy and pretended to be proud",
+  "thought about giving up on everyone",
+  "pretended to care just to fit in",
+  "stalked someone for closure I never got",
+  "felt nothing when someone cried for me",
+  "regretted not saying goodbye",
+  "imagined a whole relationship in my head"
+];
+
+
+        let currentIndex = 0;
+        let guiltyCount = 0;
+        let innocentCount = 0;
+        let totalCount = 0;
+        let usedStatements = [];
+
+        function getRandomStatement() {
+            if (usedStatements.length === statements.length) {
+                usedStatements = []; // Reset if all used
+            }
+            
+            let availableStatements = statements.filter((_, index) => !usedStatements.includes(index));
+            let randomIndex = Math.floor(Math.random() * availableStatements.length);
+            let statementIndex = statements.indexOf(availableStatements[randomIndex]);
+            
+            usedStatements.push(statementIndex);
+            return statements[statementIndex];
+        }
+
+        function displayStatement() {
+            const statement = getRandomStatement();
+            document.getElementById('statement-text').textContent = statement;
+            document.getElementById('progress-text').textContent = `Question ${totalCount + 1}`;
+        }
+
+        function updateStats() {
+            document.getElementById('guilty-count').textContent = guiltyCount;
+            document.getElementById('innocent-count').textContent = innocentCount;
+            document.getElementById('total-count').textContent = totalCount;
+        }
+
+        function showCelebration(type) {
+            const celebration = document.getElementById('celebration');
+            const messages = {
+                guilty: ['😅', '🙈', '😏', '🤭'],
+                innocent: ['😇', '✨', '👼', '🌟']
+            };
+            
+            celebration.textContent = messages[type][Math.floor(Math.random() * messages[type].length)];
+            celebration.classList.add('show');
+            
+            setTimeout(() => {
+                celebration.classList.remove('show');
+            }, 600);
+        }
+
+        function answer(type) {
+            const card = document.getElementById('statement-card');
+            
+            // Add pulse effect
+            card.classList.add('pulse');
+            
+            if (type === 'guilty') {
+                guiltyCount++;
+                showCelebration('guilty');
+            } else {
+                innocentCount++;
+                showCelebration('innocent');
+            }
+            
+            totalCount++;
+            updateStats();
+            
+            // Animate to next statement
+            setTimeout(() => {
+                card.style.animation = 'slideOut 0.3s ease-out forwards';
+                
+                setTimeout(() => {
+                    displayStatement();
+                    card.style.animation = 'slideIn 0.3s ease-out forwards';
+                    card.classList.remove('pulse');
+                }, 300);
+            }, 100);
+        }
+
+        function nextStatement() {
+            const card = document.getElementById('statement-card');
+            card.style.animation = 'slideOut 0.3s ease-out forwards';
+            
+            setTimeout(() => {
+                displayStatement();
+                card.style.animation = 'slideIn 0.3s ease-out forwards';
+            }, 300);
+        }
+
+        function resetGame() {
+            guiltyCount = 0;
+            innocentCount = 0;
+            totalCount = 0;
+            usedStatements = [];
+            
+            updateStats();
+            displayStatement();
+            
+            showCelebration('innocent');
+        }
+
+        // Initialize game
+        document.addEventListener('DOMContentLoaded', function() {
+            displayStatement();
+            updateStats();
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowLeft' || e.key === '1') {
+                answer('innocent');
+            } else if (e.key === 'ArrowRight' || e.key === '2') {
+                answer('guilty');
+            } else if (e.key === ' ') {
+                e.preventDefault();
+                nextStatement();
+            }
+        });
+    </script>
+</body>
+</html>
